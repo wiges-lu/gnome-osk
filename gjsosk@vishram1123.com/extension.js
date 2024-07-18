@@ -76,15 +76,15 @@ let currentMonitorId = 0;
 
 export default class GjsOskExtension extends Extension {
 	_openKeyboard (instant) {
-		if (this.Keyboard.state == State.CLOSED) {
-			this.Keyboard.open(null, !instant ? null : true);
-		}
+		// if (this.Keyboard.state == State.CLOSED) {
+		this.Keyboard.open(null, !instant ? null : true);
+		//}
 	}
 
 	_closeKeyboard (instant) {
-		if (this.Keyboard.state == State.OPENED) {
-			this.Keyboard.close(!instant ? null : true);
-		}
+		//if (this.Keyboard.state == State.OPENED) {
+		this.Keyboard.close(!instant ? null : true);
+		//}
 	}
 
 	_toggleKeyboard (instant = false) {

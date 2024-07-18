@@ -8,7 +8,7 @@ import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/
 
 
 export default class GjsOskPreferences extends ExtensionPreferences {
-	fillPreferencesWindow(window) {
+	fillPreferencesWindow (window) {
 		const UIFolderPath = this.dir.get_child('ui').get_path();
 
 		let iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
@@ -35,7 +35,7 @@ export default class GjsOskPreferences extends ExtensionPreferences {
 		});
 		layoutRow.add_row(layoutLandscapeRow);
 
-		let layoutList = ["Full Sized International", "Full Sized US", "Tenkeyless International", "Tenkeyless US", "Compact International", "Compact US", "Split International", "Split US"];
+		let layoutList = ["Wisol", "Full Sized International", "Full Sized US", "Tenkeyless International", "Tenkeyless US", "Compact International", "Compact US", "Split International", "Split US"];
 		let layoutLandscapeDrop = Gtk.DropDown.new_from_strings(layoutList);
 		layoutLandscapeDrop.valign = Gtk.Align.CENTER;
 		layoutLandscapeDrop.selected = settings.get_int("layout-landscape");

@@ -74,15 +74,15 @@ let layouts;
 
 export default class GjsOskExtension extends Extension {
 	_openKeyboard (instant) {
-		if (this.Keyboard.state == State.CLOSED) {
-			this.Keyboard.open(null, !instant ? null : true);
-		}
+		// if (this.Keyboard.state == State.CLOSED) {
+		this.Keyboard.open(null, !instant ? null : true);
+		//}
 	}
 
 	_closeKeyboard (instant) {
-		if (this.Keyboard.state == State.OPENED) {
-			this.Keyboard.close(!instant ? null : true);
-		}
+		//if (this.Keyboard.state == State.OPENED) {
+		this.Keyboard.close(!instant ? null : true);
+		//}
 	}
 
 	_toggleKeyboard (instant = false) {
@@ -536,13 +536,13 @@ class Keyboard extends Dialog {
 	}
 
 	open (noPrep = null, instant = null) {
-		//if (noPrep == null || !noPrep) {
-		this.prevKeyFocus = global.stage.key_focus
-		this.inputDevice = Clutter.get_default_backend().get_default_seat().create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
-		this.state = State.OPENING
-		this.show();
-		//}
-		/*if (noPrep == null || noPrep) {
+		if (noPrep == null || !noPrep) {
+			this.prevKeyFocus = global.stage.key_focus
+			this.inputDevice = Clutter.get_default_backend().get_default_seat().create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
+			this.state = State.OPENING
+			this.show();
+		}
+		if (noPrep == null || noPrep) {
 			let monitor = Main.layoutManager.primaryMonitor;
 			let posX = [this.settings.get_int("snap-spacing-px"), ((monitor.width * .5) - ((this.width * .5))), monitor.width - this.width - this.settings.get_int("snap-spacing-px")][(this.settings.get_int("default-snap") % 3)];
 			let posY = [this.settings.get_int("snap-spacing-px"), ((monitor.height * .5) - ((this.height * .5))), monitor.height - this.height - this.settings.get_int("snap-spacing-px")][Math.floor((this.settings.get_int("default-snap") / 3))];
@@ -572,7 +572,7 @@ class Keyboard extends Dialog {
 				mode: Clutter.AnimationMode.EASE_OUT_QUAD
 			})
 			this.opened = true;
-		}*/
+		}
 	}
 
 	close (instant = null) {

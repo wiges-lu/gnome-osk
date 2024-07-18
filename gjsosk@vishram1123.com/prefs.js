@@ -9,7 +9,7 @@ import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/
 
 
 export default class GjsOskPreferences extends ExtensionPreferences {
-	fillPreferencesWindow(window) {
+	fillPreferencesWindow (window) {
 		const UIFolderPath = this.dir.get_child('ui').get_path();
 
 		let iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());

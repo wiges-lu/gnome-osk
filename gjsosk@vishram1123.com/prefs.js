@@ -8,7 +8,7 @@ import { ExtensionPreferences, gettext as _ } from 'resource:///org/gnome/Shell/
 
 
 export default class GjsOskPreferences extends ExtensionPreferences {
-	fillPreferencesWindow(window) {
+	fillPreferencesWindow (window) {
 		const UIFolderPath = this.dir.get_child('ui').get_path();
 
 		let iconTheme = Gtk.IconTheme.get_for_display(Gdk.Display.get_default());
@@ -30,7 +30,7 @@ export default class GjsOskPreferences extends ExtensionPreferences {
 		});
 		behaviorGroup.add(layoutRow);
 
-		let layoutList = ["Full Sized International", "Full Sized US", "Tenkeyless International", "Tenkeyless US", "Compact International", "Compact US", "Split International", "Split US"];
+		let layoutList = ["Wisol", "Full Sized International", "Full Sized US", "Tenkeyless International", "Tenkeyless US", "Compact International", "Compact US", "Split International", "Split US"];
 		let layoutDrop = Gtk.DropDown.new_from_strings(layoutList);
 		layoutDrop.valign = Gtk.Align.CENTER;
 		layoutDrop.selected = settings.get_int("layout");
@@ -211,7 +211,7 @@ export default class GjsOskPreferences extends ExtensionPreferences {
 		let numChanger_font = Gtk.SpinButton.new_with_range(0, 100, 1);
 		numChanger_font.value = settings.get_int('font-size-px');
 		numChanger_font.valign = Gtk.Align.CENTER;
-		
+
 		fontSize.add_suffix(numChanger_font);
 		fontSize.activatable_widget = numChanger_font;
 
@@ -348,7 +348,7 @@ export default class GjsOskPreferences extends ExtensionPreferences {
 		page2.add(links_pref_group);
 
 		window.add(page2);
-		
+
 		settings.bind("layout", layoutDrop, "selected", 0);
 		settings.bind("enable-drag", dragEnableDT, "active", 0);
 		settings.bind("enable-tap-gesture", dragOpt, "selected", 0);

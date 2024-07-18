@@ -62,7 +62,7 @@ class KeyboardMenuToggle extends QuickSettings.QuickMenuToggle {
 		this.menu._settingsActions[this.extensionObject.uuid] = settingsItem;
 	}
 
-	_refresh() {
+	_refresh () {
 		for (var i in this._itemsSection._getMenuItems()) {
 			this._itemsSection._getMenuItems()[i].setIcon(this.settings.get_int("enable-tap-gesture") == i ? 'emblem-ok-symbolic' : null)
 		}
@@ -75,19 +75,19 @@ let layouts;
 let currentMonitorId = 0;
 
 export default class GjsOskExtension extends Extension {
-	_openKeyboard(instant) {
+	_openKeyboard (instant) {
 		if (this.Keyboard.state == State.CLOSED) {
 			this.Keyboard.open(null, !instant ? null : true);
 		}
 	}
 
-	_closeKeyboard(instant) {
+	_closeKeyboard (instant) {
 		if (this.Keyboard.state == State.OPENED) {
 			this.Keyboard.close(!instant ? null : true);
 		}
 	}
 
-	_toggleKeyboard(instant = false) {
+	_toggleKeyboard (instant = false) {
 		if (!this.Keyboard.opened) {
 			this._openKeyboard(instant);
 			this.Keyboard.openedFromButton = true;
@@ -99,7 +99,7 @@ export default class GjsOskExtension extends Extension {
 		}
 	}
 
-	open_interval() {
+	open_interval () {
 		global.stage.disconnect(this.tapConnect)
 		if (this.openInterval !== null) {
 			clearInterval(this.openInterval);
@@ -131,7 +131,7 @@ export default class GjsOskExtension extends Extension {
 		})
 	}
 
-	enable() {
+	enable () {
 		this.settings = this.getSettings();
 		this.darkSchemeSettings = this.getSettings("org.gnome.desktop.interface");
 		this.inputLanguageSettings = InputSourceManager.getInputSourceManager();
@@ -271,7 +271,7 @@ export default class GjsOskExtension extends Extension {
 		];
 	}
 
-	disable() {
+	disable () {
 		this.gnomeKeyboardSettings.disconnect(this.isGnomeKeyboardEnabledHandler)
 		this.gnomeKeyboardSettings.set_boolean('screen-keyboard-enabled', this.isGnomeKeyboardEnabled);
 
@@ -321,7 +321,7 @@ class Keyboard extends Dialog {
 		GObject.registerClass(this);
 	}
 
-	_init(settings, extensionObject) {
+	_init (settings, extensionObject) {
 		this.settingsOpenFunction = extensionObject.openPrefs
 		this.inputDevice = Clutter.get_default_backend().get_default_seat().create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
 		this.settings = settings;
@@ -419,7 +419,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	destroy() {
+	destroy () {
 		Main.keyboard.maybeHandleEvent = this._oldMaybeHandleEvent
 		global.stage.remove_action_by_name('osk')
 		if (this.oldBottomDragAction !== null && this.oldBottomDragAction instanceof Clutter.Action)
@@ -445,7 +445,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	startDragging(event, delta) {
+	startDragging (event, delta) {
 		if (this.draggable) {
 			if (this._dragging)
 				return Clutter.EVENT_PROPAGATE;
@@ -471,7 +471,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	endDragging() {
+	endDragging () {
 		if (this.draggable) {
 			if (this._dragging) {
 				if (this._releaseId) {
@@ -504,7 +504,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	motionEvent(event) {
+	motionEvent (event) {
 		if (this.draggable) {
 			let [absX, absY] = event.get_coords();
 			this.snapMovement(absX - this.delta[0], absY - this.delta[1]);
@@ -514,7 +514,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	snapMovement(xPos, yPos) {
+	snapMovement (xPos, yPos) {
 		let monitor = Main.layoutManager.monitors[currentMonitorId]
 		if (xPos < monitor.x || yPos < monitor.y || xPos > monitor.x + monitor.width || yPos > monitor.y + monitor.width) {
 			this.set_translation(xPos, yPos, 0);
@@ -540,7 +540,7 @@ class Keyboard extends Dialog {
 		this.set_translation(xPos + monitor.x, yPos + monitor.y, 0);
 	}
 
-	setOpenState(percent) {
+	setOpenState (percent) {
 		let monitor = Main.layoutManager.monitors[currentMonitorId];
 		let posX = [this.settings.get_int("snap-spacing-px"), ((monitor.width * .5) - ((this.width * .5))), monitor.width - this.width - this.settings.get_int("snap-spacing-px")][(this.settings.get_int("default-snap") % 3)];
 		let posY = [this.settings.get_int("snap-spacing-px"), ((monitor.height * .5) - ((this.height * .5))), monitor.height - this.height - this.settings.get_int("snap-spacing-px")][Math.floor((this.settings.get_int("default-snap") / 3))];
@@ -552,7 +552,7 @@ class Keyboard extends Dialog {
 		this.box.set_opacity(op)
 	}
 
-	open(noPrep = null, instant = null) {
+	open (noPrep = null, instant = null) {
 		if (noPrep == null || !noPrep) {
 			this.prevKeyFocus = global.stage.key_focus
 			this.inputDevice = Clutter.get_default_backend().get_default_seat().create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
@@ -598,7 +598,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	close(instant = null) {
+	close (instant = null) {
 		this.prevKeyFocus = null;
 		let monitor = Main.layoutManager.monitors[currentMonitorId];
 		let posX = [this.settings.get_int("snap-spacing-px"), ((monitor.width * .5) - ((this.width * .5))), monitor.width - this.width - this.settings.get_int("snap-spacing-px")][(this.settings.get_int("default-snap") % 3)];
@@ -638,19 +638,19 @@ class Keyboard extends Dialog {
 		this.releaseAllKeys();
 	}
 
-	vfunc_button_press_event() {
+	vfunc_button_press_event () {
 		this.delta = [Clutter.get_current_event().get_coords()[0] - this.translation_x, Clutter.get_current_event().get_coords()[1] - this.translation_y];
 		return this.startDragging(Clutter.get_current_event(), this.delta)
 	}
 
-	vfunc_button_release_event() {
+	vfunc_button_release_event () {
 		if (this._dragging && !this._grabbedSequence) {
 			return this.endDragging();
 		}
 		return Clutter.EVENT_PROPAGATE;
 	}
 
-	vfunc_motion_event() {
+	vfunc_motion_event () {
 		let event = Clutter.get_current_event();
 		if (this._dragging && !this._grabbedSequence) {
 			this.motionEvent(event);
@@ -658,7 +658,7 @@ class Keyboard extends Dialog {
 		return Clutter.EVENT_PROPAGATE;
 	}
 
-	vfunc_touch_event() {
+	vfunc_touch_event () {
 		let event = Clutter.get_current_event();
 		let sequence = event.get_event_sequence();
 
@@ -677,7 +677,7 @@ class Keyboard extends Dialog {
 		return Clutter.EVENT_PROPAGATE;
 	}
 
-	buildUI() {
+	buildUI () {
 		this.box.set_opacity(0);
 		this.keys = [];
 		let monitor = Main.layoutManager.monitors[currentMonitorId]
@@ -1126,7 +1126,7 @@ class Keyboard extends Dialog {
 		});
 	}
 
-	lightOrDark(r, g, b) {
+	lightOrDark (r, g, b) {
 		var hsp;
 		hsp = Math.sqrt(
 			0.299 * (r * r) +
@@ -1139,10 +1139,10 @@ class Keyboard extends Dialog {
 			return false;
 		}
 	}
-	releaseAllKeys() {
+	releaseAllKeys () {
 		let instances = [];
 
-		function traverse(obj) {
+		function traverse (obj) {
 			for (let key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					if (key === "code") {
@@ -1175,7 +1175,7 @@ class Keyboard extends Dialog {
 			}
 		})
 	}
-	sendKey(keys) {
+	sendKey (keys) {
 		try {
 			for (var i = 0; i < keys.length; i++) {
 				this.inputDevice.notify_key(Clutter.get_current_event_time(), keys[i], Clutter.KeyState.PRESSED);
@@ -1194,7 +1194,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	decideMod(i, mBtn) {
+	decideMod (i, mBtn) {
 		if (i.code == 29 || i.code == 56 || i.code == 97 || i.code == 125) {
 			this.setNormMod(mBtn);
 		} else if (i.code == 100) {
@@ -1216,7 +1216,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	setCapsLock(button, state) {
+	setCapsLock (button, state) {
 		if (state) {
 			button.add_style_class_name("selected");
 			this.capsL = true;
@@ -1227,7 +1227,7 @@ class Keyboard extends Dialog {
 		this.updateKeyLabels();
 	}
 
-	setNumLock(button, state) {
+	setNumLock (button, state) {
 		if (state) {
 			button.add_style_class_name("selected");
 			this.numsL = true;
@@ -1238,7 +1238,7 @@ class Keyboard extends Dialog {
 		this.updateKeyLabels();
 	}
 
-	setAlt(button) {
+	setAlt (button) {
 		this.alt = !this.alt;
 		this.updateKeyLabels();
 		if (!this.alt) {
@@ -1247,7 +1247,7 @@ class Keyboard extends Dialog {
 		this.setNormMod(button);
 	}
 
-	setShift(button) {
+	setShift (button) {
 		this.shift = !this.shift;
 		this.updateKeyLabels();
 		if (!this.shift) {
@@ -1259,7 +1259,7 @@ class Keyboard extends Dialog {
 		this.setNormMod(button);
 	}
 
-	updateKeyLabels() {
+	updateKeyLabels () {
 		this.keys.forEach(key => {
 			if (key.char != undefined) {
 				let layer = (this.alt ? 'alt' : '') + (this.shift ? 'shift' : '') + (this.numsL ? 'num' : '') + (this.capsL ? 'caps' : '') + (this.numsL || this.capsL ? 'lock' : '')
@@ -1270,7 +1270,7 @@ class Keyboard extends Dialog {
 	}
 
 
-	setNormMod(button) {
+	setNormMod (button) {
 		if (this.mod.includes(button.char.code)) {
 			this.mod.splice(this.mod.indexOf(button.char.code), this.mod.indexOf(button.char.code) + 1);
 			if (!(button.char.code == 42) && !(button.char.code == 54))
@@ -1286,7 +1286,7 @@ class Keyboard extends Dialog {
 		}
 	}
 
-	resetAllMod() {
+	resetAllMod () {
 		this.shift = false;
 		this.alt = false;
 		this.updateKeyLabels()
